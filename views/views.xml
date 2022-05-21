@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+
+    <record model="ir.ui.view" id="gossiste_open.list">
+      <field name="name">Form Grossiste</field>
+      <field name="model">form.grossiste</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+          <group string="FORMULAIRE GROSSISTE" style="text-align: center;border: 5px;">
+            <group>
+              <field name="partner_id"/>
+              <field name="name_manager"/>
+              <field name="sub_manager"/>
+              <field name="gender"/>
+              <field name="phone"/>
+              <field name="work" placeholder="veillez choisir le type d'activité" />
+              <field name="address"/>
+              <field name="city"/>
+              <field name="gps"/>
+            </group>
+            <group>
+              <field name="contact_manager"/>
+              <field name="sub_num"/>
+              <field name="card"/>
+              <field name="boutiquePrincipale"/>
+              <field name="nameBAbidjan"/>
+              <field name="nameBItern"/>
+              <field name="nb_boutique"/>
+              <field name="nb_vendu"/>
+            </group>
+          </group>
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" />
+            <field name="activity_ids" widget="mail_activity"/>
+            <field name="message_ids" widget="mail_thread" />
+				</div>
+        </form>
+      </field>
+    </record>
+
+
+    <record id="tree_view_tree" model="ir.ui.view">
+        <field name="name">Form</field>
+        <field name="model">form.grossiste</field>
+        <field name="arch" type="xml">
+            <tree string="FormGross">
+              <field name="partner_id"/>
+                <field name="name_manager"/>
+                <field name="gender"/>
+                <field name="work"/>
+                <field name="phone"/>
+                <field name="sub_num"/>
+                <field name="address"/>
+                <field name="city"/>
+                <field name="contact_manager"/>
+                <field name="sub_manager"/>
+                <field name="card"/>
+                <field name="nameBAbidjan"/>
+                <field name="nameBItern"/>
+                <field name="nb_boutique"/>
+                <field name="nb_vendu"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="gossiste_open.action_window">
+      <field name="name">Formulaire</field>
+      <field name="res_model">form.grossiste</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+
+    <!-- server action to the one above -->
+<!--
+    <record model="ir.actions.server" id="gossiste_open.action_server">
+      <field name="name">gossiste_open server</field>
+      <field name="model_id" ref="model_gossiste_open_gossiste_open"/>
+      <field name="state">code</field>
+      <field name="code">
+        action = {
+          "type": "ir.actions.act_window",
+          "view_mode": "tree,form",
+          "res_model": model._name,
+        }
+      </field>
+    </record>
+-->
+
+    <!-- Top menu item -->
+
+    <menuitem name="Grossiste Form" id="gossiste_open.menu_root" action="gossiste_open.action_window" sequence="3" />
+
+    <!-- menu categories -->
+<!--
+    <menuitem name="Menu 1" id="gossiste_open.menu_1" parent="gossiste_open.menu_root"/>
+    <menuitem name="Menu 2" id="gossiste_open.menu_2" parent="gossiste_open.menu_root"/>
+-->
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="gossiste_open.menu_1_list" parent="gossiste_open.menu_1"
+              action="gossiste_open.action_window"/>
+    <menuitem name="Server to list" id="gossiste_open" parent="gossiste_open.menu_2"
+              action="gossiste_open.action_server"/>
+-->
+  </data>
+</odoo>

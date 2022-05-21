@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_form_grossiste,access.form.grossiste,model_form_grossiste,base.group_user,1,1,1,1
+access_group_grossiste_user,access.form.grossiste,model_form_grossiste,gossiste_open.group_grossiste_user,1,1,1,1
+access_group_grossiste_manager,access.form.grossiste,model_form_grossiste,gossiste_open.group_grossiste_manager,1,1,1,1

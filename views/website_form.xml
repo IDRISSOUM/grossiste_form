@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- dynamic add menu item events-->
+        <record id="menu_grossiste_open" model="website.menu">
+            <field name="name">Formulaire Grossiste</field>
+            <field name="url">/grossiste_form</field>
+            <field name="parent_id" ref="website.main_menu" />
+            <field name="sequence" type="int">13</field>
+        </record>
+
+        <template id="create_grossiste_form" name="Create Grossiste Form 1">
+		<t t-call="website.layout">
+			<div id="wrap">
+                <div class="oe_structure oe_empty">
+                    <div class="container justify-content-center">
+                        <section>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h1 class="text-center">Formulaire de prospection terrain</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <form action="/grossiste/form/" method="POST"
+                            class="form-horizontal mt32 container" enctype="multipart/form-data">
+                            <div class="row o_portal_details d-flex justify-content-center jumbotron">
+                                <div class="col-lg-8">
+                                    <div class='row'>
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()" />
+
+                                        <!-- <div t-attf-class="form-group col-xl-6 #{error and 'partner_id' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="partner_id">E-mail
+                                                                </label>
+                                            <input type="text" class="form-control" name="partner_id" t-attf-value="#{partner_id or ''}"/>
+                                        </div> -->
+                                         <div t-attf-class="form-group #{error and 'partner_id' in error and 'has-error' or ''} col-lg-6 pull-left">
+
+                                            <label class="control-label" for="partner_id">E-mail commercial: </label>
+                                            <t t-set="customer_ids" t-value="website.get_partner_list()"/>
+                                            <select class="form-control" name="partner_id">
+                                                <option value="">select...</option>
+                                                <t t-foreach="customer_ids" t-as="customer">
+                                                    <option t-att-value="customer.id">
+                                                        <t t-esc="customer.name" />
+                                                    </option>
+                                                </t>
+                                            </select>
+
+                                        </div>
+
+                                        <!-- <div t-attf-class="form-group #{error and 'name' in error and 'has-error' or ''} col-lg-6 pull-left">
+
+                                            <label class="control-label" for="name">E-mail:</label>
+                                            <t t-set="website_grossiste_team" t-value="website.get_partner_list()"/>
+                                            <select class="form-control" name="name">
+                                                <option value="">select...</option>
+                                                <t t-foreach="website_grossiste_team" t-as="team">
+                                                    <option t-att-value="team.id"
+                                                        t-att-selected="team.id == int(name) if name else team.id == ticket.name.id">
+                                                        <t t-esc="team.name" />
+                                                    </option>
+                                                </t>
+                                            </select>
+
+                                        </div> -->
+
+                                        <!-- <div
+                                            t-attf-class="form-group col-xl-6 #{error and 'name' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="name">
+                                                E-mail:
+                                            </label>
+                                            <t t-set="website_grossiste_team" t-value="website.get_partner_list()" />
+                                            <select name="name" class="form-control">
+                                                <option value="">select...</option>
+                                                <t t-foreach="website_grossiste_team or []" t-as="team">
+                                                    <option t-att-value="team.id">
+                                                        <t t-esc="team.name" />
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div> -->
+
+                                        <!-- <div t-attf-class="form-group #{error and 'partner_id' in error and 'has-error' or ''} col-lg-6 pull-left">
+
+                                            <label class="control-label" for="partner_id">Customer</label>
+                                            <t t-set="customer_ids" t-value="website.get_partner_list()"/>
+                                            <select class="form-control" name="partner_id">
+                                                <option value="">select...</option>
+                                                <t t-foreach="customer_ids" t-as="customer">
+                                                    <option t-att-value="customer.id"
+                                                        t-att-selected="customer.id == int(partner_id) if partner_id else customer.id == partner_id.partner_id">
+                                                        <t t-esc="customer.partner_id" />
+                                                    </option>
+                                                </t>
+                                            </select>
+
+                                        </div> -->
+                                        <!-- <div
+                                            t-attf-class="form-group col-xl-6 #{error and 'partner_id' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="partner_id">
+                                                E-mail
+                                            </label>
+                                            <t t-set="website_grossiste_team" t-value="website.get_partner_list()" />
+                                            <select name="partner_id" class="form-control">
+                                                <option value="">select...</option>
+                                                <t t-foreach="website_grossiste_team or []" t-as="team">
+                                                    <option t-att-value="team.id">
+                                                        <t t-esc="team.partner_id" />
+                                                    </option>
+                                                </t>
+                                            </select>
+                                        </div> -->
+
+                                        <div class="form-group col-xl-6">
+                                            <label class="col-form-label" for="name_manager">Nom du responsable: 
+                                            </label>
+                                            <input type="text" class="form-control" name="name_manager"
+                                                    t-attf-value="#{name_manager or ''}" />
+                                        </div>
+
+                                        <div class="form-group col-xl-6">
+                                            <label class="col-form-label" for="sub_manager">Nom du gérant de la boutique: 
+                                            </label>
+                                            <input type="text" class="form-control" name="sub_manager"
+                                                    t-attf-value="#{sub_manager or ''}" />
+                                        </div>
+
+                                         <div
+                                            t-attf-class="form-group col-xl-6 #{error and 'gender' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="gender">Genre H/F:
+                                            </label>
+                                            <select name="gender" class="form-control">
+                                                <option value="">genre...</option>
+                                                <option value="m">Homme</option>
+                                                <option value="f">Femme</option>
+                                            </select>
+                                        </div>
+
+                                        <div
+                                            t-attf-class="form-group col-xl-6 #{error and 'phone' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="phone">Téléphone*:
+                                            </label>
+                                            <input type="text" class="form-control" name="phone"
+                                                pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$"
+                                                t-attf-value="#{phone or ''}" placeholder="veuillez indiquer l'indicatif du pays(+225)"/>
+                                        </div>
+
+                                        <div
+                                            t-attf-class="form-group col-xl-6 #{error and 'sub_num' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="sub_num">Téléphone du gérant*:
+                                            </label>
+                                            <input type="text" class="form-control" name="sub_num"
+                                                pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$"
+                                                t-attf-value="#{sub_num or ''}" placeholder="veuillez indiquer l'indicatif du pays(+225)"/>
+                                        </div>
+
+                                        <div  t-attf-class="form-group col-xl-6 #{error and 'work' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="work">Categorie:
+                                            </label>
+                                            <select name="work" class="form-control">
+                                                <option value="">Categorie...</option>
+                                                <option value="d">Distributeur</option>
+                                                <option value="g">Grossiste</option>
+                                                <option value="v">Revendeur</option>
+                                                <option value="a">Autre</option>
+                                            </select>
+                                        </div>
+
+                                        <div
+                                            t-attf-class="form-group col-xl-6 #{error and 'city' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="city">Ville:
+                                            </label>
+                                            <input type="text" class="form-control" name="city"
+                                                    t-attf-value="#{city or ''}" />
+                                        </div>
+
+                                        <div
+                                            t-attf-class="form-group col-xl-6 #{error and 'address' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="address">Adresse*:
+                                            </label>
+                                            <input type="text" class="form-control" name="city"
+                                                    t-attf-value="#{address or ''}" placeholder="Ex: Paroisse Saint Cécile du vallon"/>
+                                        </div>
+
+                                        <div
+                                            t-attf-class="form-group col-xl-6 #{error and 'contact_manager' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="contact_manager">E-mail responsable:
+                                            </label>
+                                            <input type="text" class="form-control" name="contact_manager"
+                                                    t-attf-value="#{contact_manager or ''}" />
+                                        </div>
+
+                                        <div
+                                            t-attf-class="form-group col-xl-6 #{error and 'card' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="card">CNI:
+                                            </label>
+                                            <input type="text" class="form-control" name="card"
+                                                    t-attf-value="#{card or ''}" />
+                                        </div>
+
+                                        <div
+                                            t-attf-class="form-group col-xl-6 #{error and 'boutiquePrincipale' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="boutiquePrincipale">Nom de la boutique principale:
+                                            </label>
+                                            <input type="text" class="form-control" name="boutiquePrincipale"
+                                                    t-attf-value="#{boutiquePrincipale or ''}" />
+                                        </div>
+
+                                        <div
+                                            t-attf-class="form-group col-xl-6 #{error and 'nameBAbidjan' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="nameBAbidjan">Nom des boutiques abidjan:
+                                            </label>
+                                            <input type="text" class="form-control" name="nameBAbidjan"
+                                                    t-attf-value="#{nameBAbidjan or ''}" />
+                                        </div>
+
+
+                                        <div
+                                            t-attf-class="form-group col-xl-6 #{error and 'nameBItern' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="nameBItern">Nom des boutiques à l'intérieur:
+                                            </label>
+                                            <input type="text" class="form-control" name="nameBItern"
+                                                    t-attf-value="#{nameBItern or ''}" />
+                                        </div>
+
+                                        <div
+                                            t-attf-class="form-group col-xl-6 #{error and 'nb_boutique' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="nb_boutique">Nombre de boutiques:
+                                            </label>
+                                            <input type="number" class="form-control" name="nb_boutique"
+                                                    t-attf-value="#{nb_boutique or ''}" />
+                                        </div>
+
+                                        <div
+                                            t-attf-class="form-group col-xl-6 #{error and 'nb_vendu' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="nb_vendu">Nombre de pièces vendus par mois:
+                                            </label>
+                                            <input type="number" class="form-control" name="nb_vendu"
+                                                    t-attf-value="#{nb_vendu or ''}" />
+                                        </div>
+
+                                        <div t-attf-class="form-group col-xl-12  col-lg-12 #{error and 'gps' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="gps">Position:
+                                            </label>
+                                            <textarea id="story" class="form-control" name="gps" t-attf-value="#{gps or ''}" placeholder="Ex: Rue des Jardins Rue 102" style="resize: none;" ></textarea>
+                                        </div>
+
+                                        <div
+                                            t-attf-class="form-group col-xl-6 #{error and 'images' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="images">Photo de la boutique:
+                                            </label>
+                                            <input type="file" name="images" accept="image/*" data-show-upload="true" data-show-caption="true" data-show-preview="true" multiple="true" t-attf-value="#{images or ''}" capture="True" /> 
+                                            
+                                        </div>
+
+                                        <div
+                                            t-attf-class="form-group col-xl-6 #{error and 'card_image' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="card_image">Photo de la carte d'identité recto:
+                                            </label>
+                                            <input type="file" name="card_image" accept="image/*" data-show-upload="true" data-show-caption="true" data-show-preview="true" multiple="true" t-attf-value="#{card_image or ''}" capture="True" /> 
+                                            
+                                        </div>
+
+                                        <div
+                                            t-attf-class="form-group col-xl-6 #{error and 'card_image1' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="card_image1">Photo de la carte d'identité verso:
+                                            </label>
+                                            <input type="file" name="card_image1" accept="image/*" data-show-upload="true" data-show-caption="true" data-show-preview="true" multiple="true" t-attf-value="#{card_image1 or ''}" capture="True" /> 
+                                            
+                                        </div>
+                                        
+                                        <div
+                                            t-attf-class="form-group col-xl-6 #{error and 'card_image_sign' in error and 'has-error' or ''}">
+                                            <label class="col-form-label" for="card_image_sign">Photo de la signature:
+                                            </label>
+                                            <input type="file" name="card_image_sign" accept="image/*" data-show-upload="true" data-show-caption="true" data-show-preview="true" multiple="true" t-attf-value="#{card_image_sign or ''}" capture="True" />                          
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-offset-3 col-sm-offset-4 col-sm-12 col-md-12">
+                                            <button class="btn btn-primary btn-lg justify-content-center">Envoyé</button>
+                                        </div>
+                                    </div>
+                                </div>              
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+			</div>
+		</t>
+	</template>
+
+    <record id="grossiste_thank" model="website.page">
+        <field name="name">Thank</field>
+        <field name="type">qweb</field>
+        <field name="url">/grossiste-thank-you</field>
+        <field name="website_published">True</field>
+        <field name="key">gossiste_form.grossiste_thank</field>
+        <field name="arch" type="xml">
+            <t name="Thanks" t-name="gossiste_form.grossiste_thank">
+                <t t-call="website.layout">
+                    <div id="wrap">
+                        <div class="container">
+                            <section>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h1 class="text-center">Merci</h1>
+                                        <h3 class="text-muted text-center">Nous vous remercions d'avoir remplir le formulaire</h3>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </t>
+            </t>      
+        </field>
+    </record>
+
+	<!-- <template id="grossiste_thank" model="website.page">
+
+		<t t-call="website.layout">
+
+			<div id="wrap" class="oe_structure oe_empty">
+				<section>
+					<div class="container">
+						<div class="row">
+							<div class="col-md-12">
+								<h1 class="text-center">Merci</h1>
+								<h3 class="text-muted text-center">Nous vous remercions d'avoir remplir le formulaire</h3>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+		</t>
+	</template>  -->
+
+    </data>
+</odoo>
